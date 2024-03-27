@@ -5,6 +5,7 @@ import { MOCK_DURATION } from "../constants";
 import Slider from "../components/Slider";
 import { formatAsMinutesSeconds } from "../lib/time-helpers";
 import { useShallow } from "zustand/react/shallow";
+import EventMarkers from "../components/EventMarkers";
 
 export const SessionReplayPlayer = () => {
   // NOTE: bad pattern. see the comment above the usePlayerStore definition
@@ -74,6 +75,7 @@ export const SessionReplayPlayer = () => {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div style={{ flex: 1 }}>
           <Slider />
+          <EventMarkers />
         </div>
         <span>&nbsp;</span>
         <span style={{ fontFamily: "monospace" }}>{displayTime}</span>

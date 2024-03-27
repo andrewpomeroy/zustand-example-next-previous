@@ -1,5 +1,6 @@
 import * as React from "react";
 import "./App.css";
+import "./range.css";
 import { SessionReplayPlayer } from "./shared-component-session-replay-player/SessionReplayPlayer";
 // import EventTrail from "./components/EventTrail";
 
