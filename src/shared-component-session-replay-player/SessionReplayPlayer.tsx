@@ -16,15 +16,18 @@ export const SessionReplayPlayer = () => {
   //   skipTo,
   //   initialize,
   // } = usePlayerStore()
-  const { play, pause, playing, skipTo, initialize } = usePlayerStore(
-    useShallow((state) => ({
-      play: state.play,
-      pause: state.pause,
-      playing: state.playing,
-      skipTo: state.skipTo,
-      initialize: state.initialize,
-    }))
-  );
+  const { play, pause, playing, skipTo, previousEvent, nextEvent, initialize } =
+    usePlayerStore(
+      useShallow((state) => ({
+        play: state.play,
+        pause: state.pause,
+        playing: state.playing,
+        skipTo: state.skipTo,
+        previousEvent: state.previousEvent,
+        nextEvent: state.nextEvent,
+        initialize: state.initialize,
+      }))
+    );
 
   // This is the most straightforward way I could find to initialize the store,
   // trying to mimic a realistic setting. The key here is, the player alone is responsible for initializing the store.
@@ -77,6 +80,9 @@ export const SessionReplayPlayer = () => {
       </div>
       <div>
         <button onClick={playOrPause}>{playing ? "Pause" : "Play"}</button>
+        <span>&nbsp;</span>
+        <button onClick={() => previousEvent()}>⏮️</button>
+        <button onClick={() => nextEvent()}>⏭️</button>
         <span>&nbsp;</span>
         <button onClick={() => skipTo(0)}>Skip to 0s</button>
         <button onClick={() => skipTo(10000)}>Skip to 10s</button>

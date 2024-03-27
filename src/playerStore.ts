@@ -1,5 +1,6 @@
 import { StateCreator, create } from "zustand";
 import { EventTrailError, EventTrailPageEvent } from "./components/EventTrail";
+import { MOCK_EVENTS } from "./constants";
 
 type PlayerInternalsStore = {
   playing: boolean;
@@ -12,6 +13,8 @@ type PlayerInternalsStore = {
   animate: (time: number) => void;
   tick: (frameTime: number) => void;
   skipTo: (time: number) => void;
+  previousEvent: () => void;
+  nextEvent: () => void;
 };
 
 export const LoadingState = {
@@ -74,6 +77,33 @@ const createPlayerInteralsSlice: StateCreator<
       set({ startTime: performance.now() - clampedTime });
     }
   },
+  previousEvent: () => {
+    const { events, currentTime, skipTo } = get();
+    const currentEventIndex = events.reduce(
+      (acc, event, index) => (event.timestamp <= currentTime ? index : acc),
+      -1
+    );
+    if (currentEventIndex !== -1) {
+      const previousEvent = events[currentEventIndex];
+      if (previousEvent) {
+        skipTo(previousEvent.timestamp);
+      }
+    }
+  },
+  nextEvent: () => {
+    const { events, currentTime, skipTo } = get();
+    const currentEventIndex = events.reduce(
+      (acc, event, index) => (event.timestamp <= currentTime ? index : acc),
+      -1
+    );
+
+    if (currentEventIndex !== -1) {
+      const nextEvent = events[currentEventIndex + 1];
+      if (nextEvent) {
+        skipTo(nextEvent.timestamp);
+      }
+    }
+  },
 });
 
 type PlayerDataStore = {};
@@ -111,11 +141,11 @@ type EventTrailStoreSlice = {
   // (shifting the "global" timeline across all SR modules) when clicking on
   // waterfall item timestamps as well.
   events: (EventTrailPageEvent | EventTrailError)[];
-  setEvents: (events: (EventTrailPageEvent | EventTrailError)[]) => void;
-  eventsLoadingState: (typeof LoadingState)[keyof typeof LoadingState];
-  setEventsLoadingState: (
-    eventsLoadingState: (typeof LoadingState)[keyof typeof LoadingState]
-  ) => void;
+  // setEvents: (events: (EventTrailPageEvent | EventTrailError)[]) => void;
+  // eventsLoadingState: (typeof LoadingState)[keyof typeof LoadingState];
+  // setEventsLoadingState: (
+  //   eventsLoadingState: (typeof LoadingState)[keyof typeof LoadingState]
+  // ) => void;
   focusedEventTrailItem: EventTrailPageEvent | EventTrailError | null;
   setFocusedEventTrailItem: (item: FocusedEventTrailItem | null) => void;
   onGoToEventTrailItem: (
@@ -133,13 +163,13 @@ export const createEventTrailSlice: StateCreator<
   [],
   EventTrailStoreSlice
 > = (set, get) => ({
-  events: [],
-  setEvents: (events) => set(() => ({ events })),
-  eventsLoadingState: LoadingState.IDLE,
-  setEventsLoadingState: (eventsLoadingState) =>
-    set({
-      eventsLoadingState,
-    }),
+  events: MOCK_EVENTS,
+  // setEvents: (events) => set(() => ({ events })),
+  // eventsLoadingState: LoadingState.IDLE,
+  // setEventsLoadingState: (eventsLoadingState) =>
+  //   set({
+  //     eventsLoadingState,
+  //   }),
   focusedEventTrailItem: null,
   setFocusedEventTrailItem: (item) =>
     set(() => ({ focusedEventTrailItem: item })),
