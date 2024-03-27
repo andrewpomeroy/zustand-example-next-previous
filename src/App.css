@@ -1,0 +1,66 @@
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+body {
+  margin: 0;
+  font-family: "Inter", "Helvetica", "Arial", sans-serif;
+}
+body,
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+.Layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.MainRow,
+.WaterfallContainer {
+  flex: 1;
+}
+
+.MainRow {
+  display: flex;
+}
+
+.MainRow-item {
+  min-width: 0;
+}
+
+.MainRow-item,
+.WaterfallContainer {
+  padding: 1rem;
+  border: 1px solid gainsboro;
+}
+
+.MainRow-item--player {
+  flex: 1;
+}
+
+.MainRow-item--eventTrail {
+  flex: 0 1 33%;
+}
+
+.EventTrailItem {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+}
+
+.EventTrailItem--active {
+  border-color: dodgerblue;
+  background-color: aliceblue;
+}
+
+.EventTrailItem-event {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
