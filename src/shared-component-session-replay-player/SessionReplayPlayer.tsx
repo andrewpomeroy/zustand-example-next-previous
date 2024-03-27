@@ -69,7 +69,9 @@ export const SessionReplayPlayer = () => {
   return (
     <>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <Slider />
+        <div style={{ flex: 1 }}>
+          <Slider />
+        </div>
         <span>&nbsp;</span>
         <span style={{ fontFamily: "monospace" }}>{displayTime}</span>
       </div>

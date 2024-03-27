@@ -41,6 +41,7 @@ body,
 
 .MainRow-item--player {
   flex: 1;
+  max-width: 600px;
 }
 
 .MainRow-item--eventTrail {
@@ -63,4 +64,9 @@ body,
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.Slider-input {
+  width: 100%;
+  margin: 0;
 }
