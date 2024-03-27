@@ -13,6 +13,7 @@ type PlayerInternalsStore = {
   animate: (time: number) => void;
   tick: (frameTime: number) => void;
   skipTo: (time: number) => void;
+  previousEventLastFired: number;
   previousEvent: () => void;
   nextEvent: () => void;
 };
@@ -22,6 +23,8 @@ export const LoadingState = {
   LOADING: "LOADING",
   DONE: "DONE",
 } as const;
+
+const PREVIOUS_EVENT_SKIP_THRESHOLD = 1000;
 
 // !! Don't read too much into the specifics of the "internals" slice!
 // I just wrote this to as a means of easily replicating an interruptible, skippable timer like the one rrweb provides us
@@ -77,16 +80,26 @@ const createPlayerInteralsSlice: StateCreator<
       set({ startTime: performance.now() - clampedTime });
     }
   },
+  previousEventLastFired: 0,
   previousEvent: () => {
-    const { events, currentTime, skipTo } = get();
-    const currentEventIndex = events.reduce(
+    const { events, currentTime, skipTo, playing, previousEventLastFired } =
+      get();
+    let targetEventIndex = events.reduce(
       (acc, event, index) => (event.timestamp < currentTime ? index : acc),
       -1
     );
-    if (currentEventIndex !== -1) {
-      const previousEvent = events[currentEventIndex];
+    if (targetEventIndex !== -1) {
+      if (
+        playing &&
+        performance.now() - previousEventLastFired <
+          PREVIOUS_EVENT_SKIP_THRESHOLD
+      ) {
+        targetEventIndex -= 1;
+      }
+      const previousEvent = events[targetEventIndex];
       if (previousEvent) {
         skipTo(previousEvent.timestamp);
+        set({ previousEventLastFired: performance.now() });
       }
     }
   },
