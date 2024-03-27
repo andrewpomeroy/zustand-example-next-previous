@@ -1,5 +1,5 @@
 :root {
-  --range-thumb-size: 15px;
+  --range-thumb-size: 16px;
 }
 
 html,
@@ -78,9 +78,10 @@ body,
 .EventMarkers {
   display: flex;
   flex: 1;
-  width: 100%;
+  width: calc(100% - var(--range-thumb-size));
   height: 10px;
   position: relative;
+  margin: 0 calc(var(--range-thumb-size) / 2);
   margin-bottom: 6px;
 }
 

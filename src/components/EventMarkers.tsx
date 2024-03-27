@@ -21,8 +21,8 @@ const EventMarkers = () => {
           className="EventMarkers-marker"
           style={{
             left: `calc(${
-              (event.timestamp / totalDuration) * 100
-            }% + (var(--range-thumb-size) / 2))`,
+              event.timestamp / totalDuration
+            } * 100% + var(--range-thumb-size) * 0)`,
           }}
         />
       ))}

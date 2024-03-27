@@ -80,7 +80,7 @@ const createPlayerInteralsSlice: StateCreator<
   previousEvent: () => {
     const { events, currentTime, skipTo } = get();
     const currentEventIndex = events.reduce(
-      (acc, event, index) => (event.timestamp <= currentTime ? index : acc),
+      (acc, event, index) => (event.timestamp < currentTime ? index : acc),
       -1
     );
     if (currentEventIndex !== -1) {
@@ -96,7 +96,6 @@ const createPlayerInteralsSlice: StateCreator<
       (acc, event, index) => (event.timestamp <= currentTime ? index : acc),
       -1
     );
-
     if (currentEventIndex !== -1) {
       const nextEvent = events[currentEventIndex + 1];
       if (nextEvent) {
